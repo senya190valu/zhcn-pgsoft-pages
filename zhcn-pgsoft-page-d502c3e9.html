@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>pg模拟器 · 知识库入口</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      background: #f4f6fa;
+      color: #1e293b;
+      line-height: 1.6;
+    }
+
+    /* 深色头图 */
+    .hero {
+      background: linear-gradient(135deg, #0b1a2e 0%, #1a2f44 100%);
+      color: #e2e8f0;
+      padding: 3rem 1.5rem 2.5rem;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 2rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      color: #facc15;
+    }
+
+    .hero p {
+      margin-top: 0.75rem;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: 1rem;
+      color: #b0c4de;
+    }
+
+    .hero .badge {
+      display: inline-block;
+      margin-top: 1.2rem;
+      padding: 0.2rem 1rem;
+      border: 1px solid #facc15;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      color: #facc15;
+      background: rgba(250, 204, 21, 0.08);
+    }
+
+    /* 浅色正文区 */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 3rem;
+    }
+
+    /* 目录感布局 —— 卡片网格 */
+    .grid-4col {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    @media (min-width: 640px) {
+      .grid-4col {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (min-width: 900px) {
+      .grid-4col {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+      }
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+      padding: 1.4rem 1.2rem;
+      transition: box-shadow 0.2s;
+    }
+
+    .card:hover {
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .card h3 {
+      font-size: 1.05rem;
+      margin-bottom: 0.5rem;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card p {
+      font-size: 0.92rem;
+      color: #475569;
+    }
+
+    .card .meta {
+      margin-top: 0.6rem;
+      font-size: 0.8rem;
+      color: #64748b;
+    }
+
+    /* 说明区 */
+    .section-block {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 1.5rem 1.8rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+    }
+
+    .section-block h2 {
+      font-size: 1.3rem;
+      border-left: 4px solid #facc15;
+      padding-left: 0.75rem;
+      margin-bottom: 1rem;
+      color: #0f172a;
+    }
+
+    .section-block p {
+      margin-bottom: 0.65rem;
+      color: #334155;
+    }
+
+    .section-block a {
+      color: #b45309;
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 1px dashed #b45309;
+      transition: border 0.15s;
+    }
+
+    .section-block a:hover {
+      border-bottom: 1px solid #b45309;
+    }
+
+    /* 提示区 */
+    .tip-box {
+      background: #fef9e7;
+      border-left: 5px solid #facc15;
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      margin: 1.8rem 0;
+    }
+
+    .tip-box strong {
+      color: #92400e;
+    }
+
+    /* FAQ 摘要 */
+    .faq-item {
+      padding: 0.6rem 0;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .faq-item:last-of-type {
+      border-bottom: none;
+    }
+
+    .faq-q {
+      font-weight: 600;
+      color: #1e293b;
+    }
+
+    .faq-a {
+      font-size: 0.9rem;
+      color: #475569;
+      margin-top: 0.2rem;
+    }
+
+    /* 相关信息区 */
+    .rel-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem 1.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .rel-links span {
+      font-size: 0.9rem;
+      color: #64748b;
+    }
+
+    .rel-links a {
+      color: #b45309;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .rel-links a:hover {
+      text-decoration: underline;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid #d1d9e6;
+      margin: 1.5rem 0;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.8rem;
+      color: #94a3b8;
+      margin-top: 3rem;
+      padding: 1rem 0;
+    }
+
+    /* 响应式调整 */
+    @media (max-width: 480px) {
+      .hero h1 { font-size: 1.6rem; }
+      .section-block { padding: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 深色头图 -->
+  <header class="hero">
+    <h1>📘 pg模拟器 · 知识库</h1>
+    <p>集中索引 · 持续关注 · 回溯入口</p>
+    <span class="badge">再次访问 · 收藏 · 更新记录</span>
+  </header>
+
+  <main class="container">
+
+    <!-- 目录感：四个信息卡片 (卡片式索引) -->
+    <div class="grid-4col">
+      <div class="card">
+        <h3>📌 再次访问</h3>
+        <p>回到 <a href="https://zhcn--pgsoft.com" style="color:#b45309; font-weight:500; text-decoration:underline;">pg模拟器</a> 获取最新版本特性与配置说明。</p>
+        <div class="meta">上次同步：2025-02</div>
+      </div>
+      <div class="card">
+        <h3>🔖 收藏参考</h3>
+        <p>将本页加入书签，作为模拟器功能、场景及常见问题的统一查询点。</p>
+        <div class="meta">推荐桌面端阅读</div>
+      </div>
+      <div class="card">
+        <h3>📡 持续关注</h3>
+        <p>跟随主站更新日志、社区讨论与使用技巧，保持知识同步。</p>
+        <div class="meta">建议每月回访</div>
+      </div>
+      <div class="card">
+        <h3>🧭 导航结构</h3>
+        <p>说明 → 提示 → 相关信息 → FAQ摘要。快速定位所需内容。</p>
+        <div class="meta">当前版本 1.0</div>
+      </div>
+    </div>
+
+    <!-- 说明区：从再次访问角度切入 -->
+    <section class="section-block">
+      <h2>为什么需要再次访问</h2>
+      <p>
+        <strong>pg模拟器</strong> 面向的并不是一次性的试用场景。它的配置参数、兼容适配以及玩法扩展会随版本迭代逐步调整。如果隔了几个月再次打开，你会发现界面、设置项甚至核心逻辑都可能有了变化——这正是我们建议你收藏、并定期回看的原因。
+      </p>
+      <p>
+        直接使用浏览器访问 <a href="https://zhcn--pgsoft.com">pg模拟器</a> 即可进入主页面，不需要安装额外插件。如果你之前已经用过，本次回归可以重点留意「更新亮点」和「已知问题」两个板块，它们通常位于站点首页中段。
+      </p>
+    </section>
+
+    <!-- 提示区：收藏与关注实用建议 -->
+    <div class="tip-box">
+      <strong>📎 提示：</strong> 将本页添加到浏览器书签栏（推荐放在「工具」或「模拟器」文件夹），下次需要查阅模拟器用法、参数范围或兼容提醒时，无需重新搜索。同时也建议关注页脚的版本标记，便于判断内容时效。
+    </div>
+
+    <!-- 相关信息区：多维度关联 -->
+    <section class="section-block">
+      <h2>相关信息</h2>
+      <p>以下信息均围绕 <a href="https://zhcn--pgsoft.com">pg模拟器</a> 展开，供你按需参考：</p>
+      <div class="rel-links">
+        <span>📄 模拟器入门指南</span>
+        <span>⚙️ 配置说明</span>
+        <span>🔄 更新日志</span>
+        <span>🧪 兼容性备注</span>
+        <span>💬 社区交流</span>
+      </div>
+      <p style="margin-top:0.8rem; font-size:0.9rem; color:#475569;">
+        部分页面可能随主站结构调整，如遇链接失效请直接回到首页重新导航。
+      </p>
+    </section>
+
+    <!-- FAQ 摘要区 -->
+    <section class="section-block">
+      <h2>常见问题摘要</h2>
+      <div class="faq-item">
+        <div class="faq-q">Q：pg模拟器需要注册或付费吗？</div>
+        <div class="faq-a">当前主站提供的是免费访问模式，无需注册即可使用核心功能，部分高级选项请以站点说明为准。</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Q：我在手机上可以正常使用吗？</div>
+        <div class="faq-a">模拟器针对桌面端优化更充分，移动端浏览器可加载但布局及交互可能有所简化。</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Q：如何确认我使用的是最新版本？</div>
+        <div class="faq-a">直接访问 <a href="https://zhcn--pgsoft.com">pg模拟器</a> 首页，页面底部会显示构建日期或版本号。也可关注首页公告栏。</div>
+      </div>
+      <div style="margin-top:1rem; font-size:0.9rem; color:#64748b;">
+        📘 更多问题可前往主站「帮助」或「FAQ」分区浏览。
+      </div>
+    </section>
+
+    <hr>
+
+    <footer>
+      <p>知识库入口 · 基于 pg模拟器 站点信息整理 &nbsp;|&nbsp; 内容仅供参考，以主站实际页面为准</p>
+      <p style="margin-top:0.3rem;">更新：2025-02 &nbsp;·&nbsp; 建议收藏以便再次访问</p>
+    </footer>
+
+  </main>
+</body>
+</html>
